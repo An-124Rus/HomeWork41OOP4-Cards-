@@ -1,0 +1,8 @@
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\bin\Debug\HomeWork41OOP4(Cards).exe.config
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\bin\Debug\HomeWork41OOP4(Cards).exe
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\bin\Debug\HomeWork41OOP4(Cards).pdb
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\obj\Debug\HomeWork41OOP4(Cards).csproj.AssemblyReference.cache
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\obj\Debug\HomeWork41OOP4(Cards).csproj.SuggestedBindingRedirects.cache
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\obj\Debug\HomeWork41OOP4(Cards).csproj.CoreCompileInputs.cache
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\obj\Debug\HomeWork41OOP4(Cards).exe
+E:\CSlight\HomeWork41OOP4(Cards)\HomeWork41OOP4(Cards)\obj\Debug\HomeWork41OOP4(Cards).pdb
