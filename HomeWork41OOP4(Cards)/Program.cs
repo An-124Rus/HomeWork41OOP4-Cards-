@@ -13,6 +13,42 @@ namespace HomeWork41OOP4_Cards_
         }
     }
 
+    class CardHolder
+    {
+        protected List<Card> _hand = new List<Card>();
+
+        protected Dictionary<string, int> _cardsValue = new Dictionary<string, int>()
+        {
+            ["2"] = 2,
+            ["3"] = 3,
+            ["4"] = 4,
+            ["5"] = 5,
+            ["6"] = 6,
+            ["7"] = 7,
+            ["8"] = 8,
+            ["9"] = 9,
+            ["10"] = 10,
+            ["J"] = 2,
+            ["Q"] = 3,
+            ["K"] = 4,
+            ["A"] = 11
+        };
+
+        public void TakeCard(Card card)
+        {
+            if (card != null)
+                _hand.Add(card);
+        }
+
+        public void ShowInfo()
+        {
+            foreach (Card card in _hand)
+            {
+                card.ShowInfo();
+            }
+        }
+    }
+
     class Card
     {
         public Card(string suit, string value)
@@ -30,75 +66,24 @@ namespace HomeWork41OOP4_Cards_
         }
     }
 
-    class Player
+    class Player : CardHolder
     {
-        private List<Card> _hands = new List<Card>();
-
-        public void TakeCard(Card card)
-        {
-            if (card != null)
-                _hands.Add(card);
-        }
-
-        public void ShowInfo()
-        {
-            foreach (Card card in _hands)
-            {
-                card.ShowInfo();
-            }
-        }
-
         public int GivePlayerCount()
         {
             int value = 0;
 
-            foreach (Card card in _hands)
+            foreach (Card card in _hand)
             {
                 value += _cardsValue[card.Value];
             }
             return value;
         }
-
-        private Dictionary<string, int> _cardsValue = new Dictionary<string, int>()
-        {
-            ["2"] = 2,
-            ["3"] = 3,
-            ["4"] = 4,
-            ["5"] = 5,
-            ["6"] = 6,
-            ["7"] = 7,
-            ["8"] = 8,
-            ["9"] = 9,
-            ["10"] = 10,
-            ["J"] = 2,
-            ["Q"] = 3,
-            ["K"] = 4,
-            ["A"] = 11
-        };
     }
 
-    class Crupier
+    class Crupier : CardHolder
     {
         private Deck _deck;
         private Player _player;
-        private List<Card> _selfCards;
-
-        private Dictionary<string, int> _cardsValue = new Dictionary<string, int>()
-        {
-            ["2"] = 2,
-            ["3"] = 3,
-            ["4"] = 4,
-            ["5"] = 5,
-            ["6"] = 6,
-            ["7"] = 7,
-            ["8"] = 8,
-            ["9"] = 9,
-            ["10"] = 10,
-            ["J"] = 2,
-            ["Q"] = 3,
-            ["K"] = 4,
-            ["A"] = 11
-        };
 
         public void StartNewGame()
         {
@@ -109,7 +94,7 @@ namespace HomeWork41OOP4_Cards_
 
             bool IsWorking = true;
 
-            _selfCards = new List<Card>();
+            _hand = new List<Card>();
             _player = new Player();
             _deck = new Deck();
 
@@ -142,7 +127,7 @@ namespace HomeWork41OOP4_Cards_
                         break;
 
                     case OpenCardCommand:
-                        StopGame();
+                        RestartGame();
                         break;
 
                     case StartNewGameCommand:
@@ -163,12 +148,6 @@ namespace HomeWork41OOP4_Cards_
             _player.TakeCard(card);
         }
 
-        private void GetSelfCard(Card card)
-        {
-            if (card != null)
-                _selfCards.Add(card);
-        }
-
         private int GiveSelfPoints(Card card)
         {
             int value = 0;
@@ -178,7 +157,7 @@ namespace HomeWork41OOP4_Cards_
             return value;
         }
 
-        private void StopGame()
+        private void RestartGame()
         {
             int totatSelfCount = 0;
             int stepValue = 17;
@@ -188,12 +167,27 @@ namespace HomeWork41OOP4_Cards_
             {
                 Card card = _deck.GiveCard();
 
-                GetSelfCard(card);
+                TakeCard(card);
 
                 totatSelfCount += GiveSelfPoints(card);
             }
 
             int totalPlayerCount = _player.GivePlayerCount();
+
+            ShowResult(totatSelfCount, totalPlayerCount);
+
+            OnPlayerWon(totatSelfCount, winValue, totalPlayerCount);
+            OnCrupierWon(totatSelfCount, winValue, totalPlayerCount);
+            OnDraw(totatSelfCount, winValue, totalPlayerCount);
+
+            Console.WriteLine("\nНажмите любую клавишу");
+            Console.ReadKey();
+
+            StartNewGame();
+        }
+
+        private void ShowResult(int totatSelfCount, int totalPlayerCount)
+        {
             Console.Write($"\nУ игрока карты ");
 
             _player.ShowInfo();
@@ -201,37 +195,33 @@ namespace HomeWork41OOP4_Cards_
             Console.Write($"набрали - {totalPlayerCount} очков");
             Console.Write($"\nУ крупье карты ");
 
-            ShowCards();
+            ShowInfo();
 
             Console.Write($"набрали - {totatSelfCount} очков");
-
-            if (totalPlayerCount > totatSelfCount && totalPlayerCount <= winValue)
-                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
-            else if (totalPlayerCount > winValue && totatSelfCount > winValue)
-                Console.WriteLine("\n\nНичья.");
-            else if (totalPlayerCount > totatSelfCount && totatSelfCount <= winValue)
-                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
-
-            if (totalPlayerCount < totatSelfCount && totatSelfCount <= winValue)
-                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
-            else if (totalPlayerCount > winValue && totatSelfCount > winValue)
-                Console.WriteLine("\n\nНичья.");
-            else if (totalPlayerCount < totatSelfCount && totalPlayerCount <= winValue)
-                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
-
-            if (totalPlayerCount == totatSelfCount)
-                Console.WriteLine("\n\nНичья.");
-
-            Console.WriteLine("\nНажмите любую клавишу");
-            Console.ReadKey();
         }
 
-        private void ShowCards()
+        private static void OnDraw(int totalSelfCount, int winValue, int totalPlayerCount)
         {
-            foreach (Card card in _selfCards)
-            {
-                card.ShowInfo();
-            }
+            if (totalPlayerCount == totalSelfCount)
+                Console.WriteLine("\n\nНичья.");
+            else if (totalPlayerCount > winValue && totalSelfCount > winValue)
+                Console.WriteLine("\n\nНичья.");
+        }
+
+        private static void OnCrupierWon(int totalSelfCount, int winValue, int totalPlayerCount)
+        {
+            if (totalPlayerCount < totalSelfCount && totalSelfCount <= winValue)
+                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
+            else if (totalPlayerCount > totalSelfCount && totalPlayerCount > winValue)
+                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
+        }
+
+        private static void OnPlayerWon(int totalSelfCount, int winValue, int totalPlayerCount)
+        {
+            if (totalPlayerCount > totalSelfCount && totalPlayerCount <= winValue)
+                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
+            else if (totalPlayerCount < totalSelfCount && totalSelfCount > winValue)
+                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
         }
     }
 
