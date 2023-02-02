@@ -104,7 +104,8 @@ namespace HomeWork41OOP4_Cards_
         {
             const string TakeCardCommand = "1";
             const string OpenCardCommand = "2";
-            const string StopGameExitCommand = "3";
+            const string StartNewGameCommand = "3";
+            const string StopGameExitCommand = "4";
 
             bool IsWorking = true;
 
@@ -120,11 +121,16 @@ namespace HomeWork41OOP4_Cards_
                 Console.WriteLine(new string('_', 45));
                 Console.WriteLine($"\nВзять карту нажмите ------------- {TakeCardCommand}");
                 Console.WriteLine($"\nВскрытие карт нажмите ----------- {OpenCardCommand}");
+                Console.WriteLine($"\nНачать новую игру нажмите ------- {StartNewGameCommand}");
                 Console.WriteLine($"\nЗакончить игру и выйти нажмите -- {StopGameExitCommand}");
                 Console.WriteLine(new string('_', 45));
 
-                Console.WriteLine($"\nКарты игрока");
+                Console.Write($"\nКарты игрока: ");
+
                 _player.ShowInfo();
+
+                int currentPlayerCount = _player.GivePlayerCount();
+                Console.Write($"набрано - {currentPlayerCount} очко/очков");
 
                 Console.Write("\n\nВаш выбор: ");
                 string userInput = Console.ReadLine();
@@ -137,6 +143,10 @@ namespace HomeWork41OOP4_Cards_
 
                     case OpenCardCommand:
                         StopGame();
+                        break;
+
+                    case StartNewGameCommand:
+                        StartNewGame();
                         break;
 
                     case StopGameExitCommand:
@@ -214,8 +224,6 @@ namespace HomeWork41OOP4_Cards_
 
             Console.WriteLine("\nНажмите любую клавишу");
             Console.ReadKey();
-
-            StartNewGame();
         }
 
         private void ShowCards()
