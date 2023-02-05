@@ -15,9 +15,9 @@ namespace HomeWork41OOP4_Cards_
 
     class CardHolder
     {
-        protected List<Card> _hand = new List<Card>();
+        protected List<Card> Hand = new List<Card>();
 
-        protected Dictionary<string, int> _cardsValue = new Dictionary<string, int>()
+        protected Dictionary<string, int> CardsValue = new Dictionary<string, int>()
         {
             ["2"] = 2,
             ["3"] = 3,
@@ -37,12 +37,12 @@ namespace HomeWork41OOP4_Cards_
         public void TakeCard(Card card)
         {
             if (card != null)
-                _hand.Add(card);
+                Hand.Add(card);
         }
 
         public void ShowInfo()
         {
-            foreach (Card card in _hand)
+            foreach (Card card in Hand)
             {
                 card.ShowInfo();
             }
@@ -72,9 +72,9 @@ namespace HomeWork41OOP4_Cards_
         {
             int value = 0;
 
-            foreach (Card card in _hand)
+            foreach (Card card in Hand)
             {
-                value += _cardsValue[card.Value];
+                value += CardsValue[card.Value];
             }
             return value;
         }
@@ -94,7 +94,7 @@ namespace HomeWork41OOP4_Cards_
 
             bool IsWorking = true;
 
-            _hand = new List<Card>();
+            Hand = new List<Card>();
             _player = new Player();
             _deck = new Deck();
 
@@ -152,7 +152,7 @@ namespace HomeWork41OOP4_Cards_
         {
             int value = 0;
 
-            value += _cardsValue[card.Value];
+            value += CardsValue[card.Value];
 
             return value;
         }
