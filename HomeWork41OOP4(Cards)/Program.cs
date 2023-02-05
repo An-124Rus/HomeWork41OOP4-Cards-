@@ -47,6 +47,18 @@ namespace HomeWork41OOP4_Cards_
                 card.ShowInfo();
             }
         }
+
+        public int GetTotalPoints()
+        {
+            int value = 0;
+
+            foreach (Card card in Hand)
+            {
+                value += CardsValue[card.Value];
+            }
+
+            return value;
+        }
     }
 
     class Card
@@ -68,16 +80,6 @@ namespace HomeWork41OOP4_Cards_
 
     class Player : CardHolder
     {
-        public int GivePlayerCount()
-        {
-            int value = 0;
-
-            foreach (Card card in Hand)
-            {
-                value += CardsValue[card.Value];
-            }
-            return value;
-        }
     }
 
     class Crupier : CardHolder
@@ -89,8 +91,7 @@ namespace HomeWork41OOP4_Cards_
         {
             const string TakeCardCommand = "1";
             const string OpenCardCommand = "2";
-            const string StartNewGameCommand = "3";
-            const string StopGameExitCommand = "4";
+            const string StopGameExitCommand = "3";
 
             bool IsWorking = true;
 
@@ -106,7 +107,6 @@ namespace HomeWork41OOP4_Cards_
                 Console.WriteLine(new string('_', 45));
                 Console.WriteLine($"\nВзять карту нажмите ------------- {TakeCardCommand}");
                 Console.WriteLine($"\nВскрытие карт нажмите ----------- {OpenCardCommand}");
-                Console.WriteLine($"\nНачать новую игру нажмите ------- {StartNewGameCommand}");
                 Console.WriteLine($"\nЗакончить игру и выйти нажмите -- {StopGameExitCommand}");
                 Console.WriteLine(new string('_', 45));
 
@@ -114,7 +114,7 @@ namespace HomeWork41OOP4_Cards_
 
                 _player.ShowInfo();
 
-                int currentPlayerCount = _player.GivePlayerCount();
+                int currentPlayerCount = _player.GetTotalPoints();
                 Console.Write($"набрано - {currentPlayerCount} очко/очков");
 
                 Console.Write("\n\nВаш выбор: ");
@@ -130,12 +130,11 @@ namespace HomeWork41OOP4_Cards_
                         RestartGame();
                         break;
 
-                    case StartNewGameCommand:
-                        StartNewGame();
-                        break;
-
                     case StopGameExitCommand:
                         IsWorking = false;
+                        break;
+
+                    default:
                         break;
                 }
             }
@@ -148,37 +147,26 @@ namespace HomeWork41OOP4_Cards_
             _player.TakeCard(card);
         }
 
-        private int GiveSelfPoints(Card card)
-        {
-            int value = 0;
-
-            value += CardsValue[card.Value];
-
-            return value;
-        }
-
         private void RestartGame()
         {
-            int totatSelfCount = 0;
+            int totalSelfCount = 0;
             int stepValue = 17;
             int winValue = 21;
 
-            while (totatSelfCount < stepValue)
+            while (totalSelfCount < stepValue)
             {
                 Card card = _deck.GiveCard();
 
                 TakeCard(card);
 
-                totatSelfCount += GiveSelfPoints(card);
+                totalSelfCount = GetTotalPoints();
             }
 
-            int totalPlayerCount = _player.GivePlayerCount();
+            int totalPlayerCount = _player.GetTotalPoints();
 
-            ShowResult(totatSelfCount, totalPlayerCount);
+            ShowResult(totalSelfCount, totalPlayerCount);
 
-            OnPlayerWon(totatSelfCount, winValue, totalPlayerCount);
-            OnCrupierWon(totatSelfCount, winValue, totalPlayerCount);
-            OnDraw(totatSelfCount, winValue, totalPlayerCount);
+            FindWinner(totalSelfCount, winValue, totalPlayerCount);
 
             Console.WriteLine("\nНажмите любую клавишу");
             Console.ReadKey();
@@ -200,28 +188,68 @@ namespace HomeWork41OOP4_Cards_
             Console.Write($"набрали - {totatSelfCount} очков");
         }
 
-        private static void OnDraw(int totalSelfCount, int winValue, int totalPlayerCount)
+        private void FindWinner(int totalSelfCount, int winValue, int totalPlayerCount)
         {
+            if (OnPlayerWon(totalSelfCount, winValue, totalPlayerCount) == true)
+                Console.WriteLine("\n\nНикто не .");
+            else if (OnCrupierWon(totalSelfCount, winValue, totalPlayerCount) == true)
+                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
+            else if (OnDraw(totalSelfCount, winValue, totalPlayerCount) == true)
+                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
+        }
+
+        private bool OnDraw(int totalSelfCount, int winValue, int totalPlayerCount)
+        {
+            bool isDraw = true;
+
             if (totalPlayerCount == totalSelfCount)
-                Console.WriteLine("\n\nНичья.");
+            {
+            }
             else if (totalPlayerCount > winValue && totalSelfCount > winValue)
-                Console.WriteLine("\n\nНичья.");
+            {
+            }
+            else
+            {
+                isDraw = false;
+            }
+
+            return isDraw;
         }
 
-        private static void OnCrupierWon(int totalSelfCount, int winValue, int totalPlayerCount)
+        private bool OnCrupierWon(int totalSelfCount, int winValue, int totalPlayerCount)
         {
+            bool isCrupierWon = true;
+
             if (totalPlayerCount < totalSelfCount && totalSelfCount <= winValue)
-                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
+            {
+            }
             else if (totalPlayerCount > totalSelfCount && totalPlayerCount > winValue)
-                Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
+            {
+            }
+            else
+            {
+                isCrupierWon = false;
+            }
+
+            return isCrupierWon;
         }
 
-        private static void OnPlayerWon(int totalSelfCount, int winValue, int totalPlayerCount)
+        private bool OnPlayerWon(int totalSelfCount, int winValue, int totalPlayerCount)
         {
+            bool isPlayerWon = true;
+
             if (totalPlayerCount > totalSelfCount && totalPlayerCount <= winValue)
-                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
+            {
+            }
             else if (totalPlayerCount < totalSelfCount && totalSelfCount > winValue)
-                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
+            {
+            }
+            else
+            {
+                isPlayerWon = false;
+            }
+
+            return isPlayerWon;
         }
     }
 
