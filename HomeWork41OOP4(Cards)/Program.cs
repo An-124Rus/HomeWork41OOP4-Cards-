@@ -191,23 +191,19 @@ namespace HomeWork41OOP4_Cards_
         private void FindWinner(int totalSelfCount, int winValue, int totalPlayerCount)
         {
             if (OnPlayerWon(totalSelfCount, winValue, totalPlayerCount) == true)
-                Console.WriteLine("\n\nНикто не .");
+                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
             else if (OnCrupierWon(totalSelfCount, winValue, totalPlayerCount) == true)
                 Console.WriteLine("\n\nКазино выиграло. Сожалеем.");
             else if (OnDraw(totalSelfCount, winValue, totalPlayerCount) == true)
-                Console.WriteLine("\n\nИгрок выиграл. Поздравляем!");
+                Console.WriteLine("\n\n");
         }
 
         private bool OnDraw(int totalSelfCount, int winValue, int totalPlayerCount)
         {
             bool isDraw = true;
 
-            if (totalPlayerCount == totalSelfCount)
-            {
-            }
-            else if (totalPlayerCount > winValue && totalSelfCount > winValue)
-            {
-            }
+            if (totalPlayerCount == totalSelfCount) { }
+            else if (totalPlayerCount > winValue && totalSelfCount > winValue) { }
             else
             {
                 isDraw = false;
@@ -220,12 +216,8 @@ namespace HomeWork41OOP4_Cards_
         {
             bool isCrupierWon = true;
 
-            if (totalPlayerCount < totalSelfCount && totalSelfCount <= winValue)
-            {
-            }
-            else if (totalPlayerCount > totalSelfCount && totalPlayerCount > winValue)
-            {
-            }
+            if (totalPlayerCount < totalSelfCount && totalSelfCount <= winValue) { }
+            else if (totalPlayerCount > totalSelfCount && totalPlayerCount > winValue) { }
             else
             {
                 isCrupierWon = false;
@@ -238,12 +230,8 @@ namespace HomeWork41OOP4_Cards_
         {
             bool isPlayerWon = true;
 
-            if (totalPlayerCount > totalSelfCount && totalPlayerCount <= winValue)
-            {
-            }
-            else if (totalPlayerCount < totalSelfCount && totalSelfCount > winValue)
-            {
-            }
+            if (totalPlayerCount > totalSelfCount && totalPlayerCount <= winValue) { }
+            else if (totalPlayerCount < totalSelfCount && totalSelfCount > winValue) { }
             else
             {
                 isPlayerWon = false;
